@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^153.92.221.35$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^153.92.221.35$
+RewriteCond %{REQUEST_URI} !public/
+RewriteRule (.*) /public/$1 [L]
