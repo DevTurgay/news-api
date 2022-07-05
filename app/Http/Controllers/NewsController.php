@@ -78,8 +78,9 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\NewsPostRequest  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\NewsPostRequest $request
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(NewsPostRequest $request, $id)
@@ -106,7 +107,8 @@ class NewsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -129,7 +131,8 @@ class NewsController extends Controller
     /**
      * Upvote a news.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function upvote($id)

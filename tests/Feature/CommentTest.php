@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Comment;
+use App\Models\News;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -9,45 +11,71 @@ use Tests\TestCase;
 class CommentTest extends TestCase
 {
     /**
-     * A basic feature test example.
+     * A comment can be created
      *
      * @return void
      */
-    public function all_comments_of_a_news_can_be_fetched()
+    public function test_a_comment_can_be_created()
     {
-        $id = 1;
-        $response = $this->get('/news-comments' . $id);
-        $response->assertStatus(200);
-    }
-
-    public function a_comment_can_be_created()
-    {
+        $newsId = News::max('id');
         $comment = [
             "content" => "Comment test content",
-            "author_name" => "Comment test author"
+            "authorName" => "Comment test author",
+            "newsId" => $newsId
         ];
-        $response = $this->post('/news-comments', $comment);
-        $response->assertStatus(200);
+        $response = $this->post('/api/comment', $comment);
+        $response->assertStatus(201);
     }
 
-    public function a_comment_can_be_updated()
+    /**
+     * All comments can be fetched
+     *
+     * @return void
+     */
+    public function test_all_comments_of_a_news_can_be_fetched()
     {
-        $id = 1;
-        $comment = [
-            "content" => "Comment test content - UPDATED",
-            "author_name" => "Comment test author - UPDATED"
-        ];
-        $response = $this->post('/news-comments' . $id, $comment);
+        $newsId = News::max('id');
+        $response = $this->get('/api/comment/by-news/' . $newsId);
         $response->assertStatus(200);
     }
 
     /**
+     * Single comment can be fetched
      *
+     * @return void
      */
-    public function a_comment_can_be_deleted()
+    public function test_single_comment_can_be_fetched()
     {
-        $id = 1;
-        $response = $this->get('/news-comments/destroy' . $id);
+        $id = Comment::max('id');
+        $response = $this->get('/api/comment/' . $id);
+        $response->assertStatus(200);
+    }
+
+    /**
+     * A comment can be updated
+     *
+     * @return void
+     */
+    public function test_a_comment_can_be_updated()
+    {
+        $id = Comment::max('id');
+        $comment = [
+            "content" => "Comment test content - UPDATED",
+            "authorName" => "Comment test author - UPDATED"
+        ];
+        $response = $this->put('/api/comment/' . $id, $comment);
+        $response->assertStatus(200);
+    }
+
+    /**
+     * A comment can be deleted
+     *
+     * @return void
+     */
+    public function test_a_comment_can_be_deleted()
+    {
+        $id = Comment::max('id');
+        $response = $this->delete('/api/comment/' . $id);
         $response->assertStatus(200);
     }
 }

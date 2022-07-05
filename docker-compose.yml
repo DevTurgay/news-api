@@ -5,10 +5,10 @@ services:
         container_name: mysql_db
         environment:
             MYSQL_DATABASE: news_api
-            MYSQL_USER: admin
-            MYSQL_ROOT: root
-            MYSQL_PASSWORD: admin
-            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: {mysql_user}
+            MYSQL_ROOT: {mysql_root}
+            MYSQL_PASSWORD: {mysql_user_pass}
+            MYSQL_ROOT_PASSWORD: {mysql_root_pass}
         volumes:
             - ./storage/dbdata:/var/lib/mysql
         ports:

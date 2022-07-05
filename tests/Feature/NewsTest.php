@@ -2,61 +2,74 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\News;
 use Tests\TestCase;
 
 class NewsTest extends TestCase
 {
     /**
-     * A basic feature test example.
+     * Test if a news can be created
      *
      * @return void
      */
-    public function a_news_can_be_created()
+    public function test_a_news_can_be_created()
     {
         $news = [
             "title"  => "Test news title",
-            "author_name" => "Test news author name"
+            "authorName" => "Test news author name"
         ];
-        $response = $this->post('/news', $news);
-        $response->assertStatus(200);
-        // $createdId = Leagues::max('id');
-        // $this->assertEquals($nextId, $createdId);
+        $response = $this->post('/api/news', $news);
+        $response->assertStatus(201);
     }
 
-    public function a_news_can_be_updated()
+    /**
+     * A news can be updated
+     *
+     * @return void
+     */
+    public function test_a_news_can_be_updated()
     {
-        $id = 1;
+        $id = News::max('id');
         $news = [
             "title"  => "Test news title UPDATED",
-            "author_name" => "Test news author name UPDATED"
+            "authorName" => "Test news author name UPDATED"
         ];
-        $response = $this->put('/news' . $id, $news);
-        $response->assertStatus(200);
-        // $createdId = Leagues::max('id');
-        // $this->assertEquals($nextId, $createdId);
-    }
-
-    public function a_news_can_be_fetched()
-    {
-        $id = 1;
-        $response = $this->get('/news' . $id);
-        $response->assertStatus(200);
-        // $createdId = Leagues::max('id');
-        // $this->assertEquals($nextId, $createdId);
-    }
-
-    public function all_news_can_be_fetched()
-    {
-        $response = $this->get('/news');
+        $response = $this->put('/api/news/' . $id, $news);
         $response->assertStatus(200);
     }
 
-    public function a_news_can_be_upvoted()
+    /**
+     * A single news can be fetched
+     *
+     * @return void
+     */
+    public function test_a_news_can_be_fetched()
     {
-        $id = 1;
-        $response = $this->get('/news-upvote' . $id);
+        $id = News::max('id');
+        $response = $this->get('/api/news/' . $id);
         $response->assertStatus(200);
+    }
+
+    /**
+     * All news can be fetched
+     *
+     * @return void
+     */
+    public function test_all_news_can_be_fetched()
+    {
+        $response = $this->get('/api/news');
+        $response->assertStatus(200);
+    }
+
+    /**
+     * A news can be upvoted
+     *
+     * @return void
+     */
+    public function test_a_news_can_be_upvoted()
+    {
+        $id = News::max('id');
+        $response = $this->get('/api/news/upvote/' . $id);
+        $response->assertStatus(202);
     }
 }
